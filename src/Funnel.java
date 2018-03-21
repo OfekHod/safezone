@@ -58,6 +58,10 @@ public class Funnel {
         this.area = new Area(path);
     }
 
+    public Funnel(Funnel funnel) {
+        
+    }
+
     public Point2D getPosition() {
         return position;
     }
