@@ -15,8 +15,11 @@ public class Game extends JPanel {
         g2.setColor(Color.BLACK);
 
         Funnel funnel = new Funnel(new Point2D.Double(300, 200), 37, 100, 105, 140, 40);
-        funnel.rotate(30);
-        funnel.draw(g2);
+        funnel.g = g2;
+        //funnel.draw(g2);
+
+        Funnel expanded = funnel.expand(40,40);
+        expanded.draw(g2);
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame();
