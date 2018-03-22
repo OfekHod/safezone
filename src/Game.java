@@ -13,7 +13,8 @@ public class Game extends JPanel {
 
 
         FunnelClassifier.g = g2;
-        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(31.264109, 34.810192), "halulan", 350, 340     );
+        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(31.263224, 34.810695),
+                "halulan", 180, 170     );
 
         System.out.println("out: " + out.toString());
 

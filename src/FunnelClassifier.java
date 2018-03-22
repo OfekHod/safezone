@@ -64,10 +64,10 @@ public class FunnelClassifier {
 
     private static Line2D[] getOuterFirePoly(Point2D globalPos) {
         Line2D[] lines = {
-                new Line2D.Double(31.266038, 34.824224, 31.255561, 34.809837),
-                new Line2D.Double(31.255561, 34.809837, 31.269140, 34.796031),
-                new Line2D.Double(31.269140, 34.796031, 31.273871, 34.815633),
-                new Line2D.Double(31.273871, 34.815633, 31.266038, 34.824224)};
+                new Line2D.Double(31.261312, 34.813527, 31.264521, 34.807242),
+                new Line2D.Double(31.264521, 34.807242, 31.269422, 34.809587),
+                new Line2D.Double(31.269422, 34.809587, 31.264347, 34.816453),
+                new Line2D.Double(31.264347, 34.816453, 31.261312, 34.813527)};
         return lines;
     }
 
