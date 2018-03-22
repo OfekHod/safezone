@@ -1,4 +1,3 @@
-package models;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -38,15 +37,21 @@ public class Funnel {
 
     public Funnel(Point2D position, Weapon weapon) {
         this.position = position;
-        this.upper = new Point2D.Double(position.getX(), position.getY() + weapon.height);
 
-        Line2D line1Right = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + weapon.lowerLineLength), 90 - (weapon.lowerLineToHeightLineDegree));
-        Line2D line1Left = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + weapon.lowerLineLength), 90 + (weapon.lowerLineToHeightLineDegree));
+        GlobalPos change0 = GlobalPos.addMeters(position.getY(), position.getX(), 0, weapon.height);
+        this.upper = new Point2D.Double(position.getX(), change0.latitude);
+        GlobalPos change = GlobalPos.addMeters(position.getY(), position.getX(), 0, weapon.lowerLineLength);
+
+        Line2D line1Right = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), change.latitude), 90 - (weapon.lowerLineToHeightLineDegree));
+        Line2D line1Left = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), change.latitude), 90 + (weapon.lowerLineToHeightLineDegree));
         this.leftLower = line1Right.getP2();
         this.rightLower = line1Left.getP2();
 
-        Line2D line2Right = getLine(leftLower, position.getX() + weapon.width / 2, weapon.upperLineLength);
-        Line2D line2Left = getLine(rightLower, position.getX() - weapon.width / 2, weapon.upperLineLength);
+        GlobalPos change21 = GlobalPos.addMeters(position.getY(), position.getX(), weapon.width / 2, 0);
+        GlobalPos change22 = GlobalPos.addMeters(position.getY(), position.getX(), -weapon.width / 2, 0);
+
+        Line2D line2Right = getLine(leftLower, change21.longitude, weapon.upperLineLength);
+        Line2D line2Left = getLine(rightLower, change22.longitude, weapon.upperLineLength);
 
         this.leftUpper = line2Right.getP2();
         this.rightUpper = line2Left.getP2();
@@ -127,7 +132,7 @@ public class Funnel {
     }
 
     public Line2D getLineRightLower() {
-        return lineHeight;
+        return lineRightLower;
     }
 
     public Line2D getLineRightUpper() {
@@ -253,8 +258,9 @@ public class Funnel {
         //System.out.println("leftLower:[" + values[0] + ", " + values[1] + "]");
         it.next();
         it.currentSegment(values);
-
+        rotatedFunnel.updateLines();
         rotatedFunnel.area = new Area(rotatedFunnel.path);
+
 
         return rotatedFunnel;
     }
@@ -268,7 +274,10 @@ public class Funnel {
     }
 
     private Line2D getLine(Point2D point1, double pointX2, double length) {
-        double pointY2 = Math.pow(Math.pow(length, 2) - Math.pow(pointX2 - point1.getX(), 2), 0.5) + point1.getY();
+        GlobalPos globalPos = GlobalPos.addMeters(position.getY(),position.getX(),length,0);
+        double actualLength = globalPos.getLongitude() - position.getX();
+
+        double pointY2 = Math.pow(Math.pow(actualLength, 2) - Math.pow(pointX2 - point1.getX(), 2), 0.5) + point1.getY();
         //double pointY2Fixed = 2 * point1.getY() - pointY2;
         return new Line2D.Double(point1.getX(), point1.getY(), pointX2, pointY2);
     }

@@ -9,11 +9,20 @@ public class GlobalPos {
         this.longitude = newPos.longitude;
     }
 
-    public GlobalPos addMeters(double dx, double dy) {
-        GlobalPos newPos = new GlobalPos(this);
+    public GlobalPos(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public static GlobalPos addMeters(double latitude, double longitude, double dx, double dy) {
+        GlobalPos newPos = new GlobalPos(latitude, longitude);
         newPos.latitude = latitude + (dy / rEarth) * (180 / Math.PI);
-        newPos.longitude = longitude + (dx / rEarth) * (180 / Math.PI) / Math.cos(this.latitude * Math.PI / 180);
+        newPos.longitude = longitude + (dx / rEarth) * (180 / Math.PI) / Math.cos(latitude * Math.PI / 180);
 
         return newPos;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

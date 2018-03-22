@@ -1,6 +1,3 @@
-import models.Funnel;
-import models.Weapon;
-
 import java.awt.*;
 import java.awt.geom.*;
 
@@ -16,7 +13,7 @@ public class Game extends JPanel {
 
 
         FunnelClassifier.g = g2;
-        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(300, 400), "halulan", 100, 50);
+        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(31.264109, 34.810192), "halulan", 350, 340     );
 
         System.out.println("out: " + out.toString());
 

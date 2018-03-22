@@ -1,6 +1,3 @@
-import models.Funnel;
-import models.Weapon;
-
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Line2D;
@@ -18,7 +15,7 @@ public class FunnelClassifier {
 
         double angleDiff = Math.abs(rightAngle - leftAngle);
         if (angleDiff > weapon.lowerLineToHeightLineDegree * 2) {
-            System.out.println("expanding");
+            System.out.println("expanding degrees each side: " + angleDiff / 2);
             funnel = funnel.expand(angleDiff / 2, angleDiff / 2);
         }
 
@@ -26,7 +23,7 @@ public class FunnelClassifier {
         Line2D[] firePoly = getOuterFirePoly(globalPos);
 
         if (g != null) {
-            g.draw(new Area(linesToPath(firePoly)));
+            g.draw(new Area(linesToPath(firePoly, 1, 0)));
             funnel.g = g;
             funnel.draw();
         } else {
@@ -67,19 +64,28 @@ public class FunnelClassifier {
 
     private static Line2D[] getOuterFirePoly(Point2D globalPos) {
         Line2D[] lines = {
-                new Line2D.Double(10, 10, 50, 25),
-                new Line2D.Double(50, 25, 500, 65),
-                new Line2D.Double(500, 65, 550, 380),
-                new Line2D.Double(550, 380, 105, 600),
-                new Line2D.Double(105, 600, 10, 10)};
+                new Line2D.Double(31.266038, 34.824224, 31.255561, 34.809837),
+                new Line2D.Double(31.255561, 34.809837, 31.269140, 34.796031),
+                new Line2D.Double(31.269140, 34.796031, 31.273871, 34.815633),
+                new Line2D.Double(31.273871, 34.815633, 31.266038, 34.824224)};
         return lines;
     }
 
-    private static Path2D linesToPath(Line2D[] lines) {
+    private static double fixX(double x) {
+        //return x * 30000 - 937500;
+        return x;
+    }
+
+    private static double fixY(double y) {
+        //return y * 30000     - 1044000;
+        return y;
+    }
+
+    private static Path2D linesToPath(Line2D[] lines, double factorSize, double diffSize) {
         Path2D path = new Path2D.Double();
-        path.moveTo(lines[0].getX1(), lines[0].getY1());
+        path.moveTo(lines[0].getX1() * factorSize + diffSize, lines[0].getY1() * factorSize + diffSize);
         for (Line2D line : lines) {
-            path.lineTo(line.getX2(), line.getY2());
+            path.lineTo(line.getX2() * factorSize + diffSize, line.getY2() * factorSize + diffSize);
         }
         return path;
     }

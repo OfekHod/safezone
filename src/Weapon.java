@@ -1,4 +1,3 @@
-package models;
 
 import java.util.HashMap;
 
@@ -11,7 +10,7 @@ public class Weapon {
     public double lowerLineToHeightLineDegree;
 
     private static HashMap<String, Weapon> supportedWeapons = new HashMap<String, Weapon>() {{
-        put("halulan", new Weapon("Halulan", 3.7, 10, 10.5, 14, 40, 10));
+        put("halulan", new Weapon("Halulan", 3.7, 10, 10.5, 14, 40, 1));
     }};
 
     public static Weapon getWeapon(String name) {
