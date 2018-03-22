@@ -222,35 +222,35 @@ public class Funnel {
         it.next();
         it.currentSegment(values);
         rotatedFunnel.rightLower = new Point2D.Double(values[0], values[1]);
-        System.out.println("rightLower:[" + values[0] + ", " + values[1] + "]");
+        //System.out.println("rightLower:[" + values[0] + ", " + values[1] + "]");
         it.next();
         it.currentSegment(values);
         rotatedFunnel.rightUpper = new Point2D.Double(values[0], values[1]);
-        System.out.println("rightUpper:[" + values[0] + ", " + values[1] + "]");
+        //System.out.println("rightUpper:[" + values[0] + ", " + values[1] + "]");
         if (rightUpper2 != null) {
             it.next();
             it.currentSegment(values);
             rotatedFunnel.rightUpper2 = new Point2D.Double(values[0], values[1]);
-            System.out.println("rightUpper2:[" + values[0] + ", " + values[1] + "]");
+            //System.out.println("rightUpper2:[" + values[0] + ", " + values[1] + "]");
         }
         it.next();
         it.currentSegment(values);
         rotatedFunnel.upper = new Point2D.Double(values[0], values[1]);
-        System.out.println("upper:[" + values[0] + ", " + values[1] + "]");
+        //System.out.println("upper:[" + values[0] + ", " + values[1] + "]");
         it.next();
         it.currentSegment(values);
         if (leftUpper2 != null) {
             it.next();
             it.currentSegment(values);
             rotatedFunnel.leftUpper2 = new Point2D.Double(values[0], values[1]);
-            System.out.println("leftUpper2:[" + values[0] + ", " + values[1] + "]");
+            ///System.out.println("leftUpper2:[" + values[0] + ", " + values[1] + "]");
         }
         rotatedFunnel.leftUpper = new Point2D.Double(values[0], values[1]);
-        System.out.println("leftUpper:[" + values[0] + ", " + values[1] + "]");
+        //System.out.println("leftUpper:[" + values[0] + ", " + values[1] + "]");
         it.next();
         it.currentSegment(values);
         rotatedFunnel.leftLower = new Point2D.Double(values[0], values[1]);
-        System.out.println("leftLower:[" + values[0] + ", " + values[1] + "]");
+        //System.out.println("leftLower:[" + values[0] + ", " + values[1] + "]");
         it.next();
         it.currentSegment(values);
 

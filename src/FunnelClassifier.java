@@ -12,9 +12,16 @@ public class FunnelClassifier {
     public static Graphics2D g = null;
 
     public static Boolean isFunnelAllowed(Point2D globalPos, String weaponName, double rightAngle, double leftAngle) {
-        Funnel funnel = new Funnel(globalPos, Weapon.getWeapon(weaponName))
-                .expand(rightAngle, leftAngle)
-                .rotate(0);
+        Weapon weapon = Weapon.getWeapon(weaponName);
+        Funnel funnel = new Funnel(globalPos, weapon)
+                .rotate(angleToRotate(rightAngle, leftAngle));
+
+        double angleDiff = Math.abs(rightAngle - leftAngle);
+        if (angleDiff > weapon.lowerLineToHeightLineDegree * 2) {
+            System.out.println("expanding");
+            funnel = funnel.expand(angleDiff / 2, angleDiff / 2);
+        }
+
 
         Line2D[] firePoly = getOuterFirePoly(globalPos);
 
@@ -39,6 +46,23 @@ public class FunnelClassifier {
             }
         }
         return true;
+    }
+
+    private static double angleToRotate(double rightAngle, double leftAngle) {
+        double avg = (rightAngle + leftAngle) / 2;
+        double diff = Math.abs(rightAngle - leftAngle);
+        if (diff > 180) {
+            diff = 360 - diff;
+        }
+        if (avg - Math.abs(avg - Math.max(rightAngle, leftAngle)) == Math.min(rightAngle, leftAngle)) {
+            double angle = Math.min(rightAngle, leftAngle) + diff / 2;
+            System.out.println("angle: " + angle);
+            return angle;
+        } else {
+            double angle = Math.max(rightAngle, leftAngle) + diff / 2;
+            System.out.println("angle: " + angle);
+            return angle;
+        }
     }
 
     private static Line2D[] getOuterFirePoly(Point2D globalPos) {

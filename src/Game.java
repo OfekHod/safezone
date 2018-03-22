@@ -14,13 +14,9 @@ public class Game extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.BLACK);
 
-        //Funnel funnel = new Funnel(new Point2D.Double(300, 200), Weapon.getWeapon("halulan"). withFactor(10));
-        //funnel.g = g2;
-        //Funnel expanded = funnel.expand(40,40);
-        //expanded.draw(g2);
 
         FunnelClassifier.g = g2;
-        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(300, 400), "halulan", 80, 80);
+        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(300, 400), "halulan", 100, 50);
 
         System.out.println("out: " + out.toString());
 
