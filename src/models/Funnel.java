@@ -1,3 +1,5 @@
+package models;
+
 import java.awt.*;
 import java.awt.geom.*;
 
@@ -21,14 +23,21 @@ public class Funnel {
     private Line2D lineRightLower;
     private Line2D lineRightUpper;
     private Line2D lineHeight;
+    private Line2D lineUpperRight;
+    private Line2D lineUpperLeft;
+
+    private Line2D lineRightUpper2;
+    private Line2D lineLeftUpper2;
 
     private Area area;
     private Path2D path;
 
-    public Graphics2D g;
+    public Graphics2D g = null;
+
+    private boolean isExpanded = false;
 
     public Funnel(Point2D position, Weapon weapon) {
-            this.position = position;
+        this.position = position;
         this.upper = new Point2D.Double(position.getX(), position.getY() + weapon.height);
 
         Line2D line1Right = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + weapon.lowerLineLength), 90 - (weapon.lowerLineToHeightLineDegree));
@@ -42,12 +51,7 @@ public class Funnel {
         this.leftUpper = line2Right.getP2();
         this.rightUpper = line2Left.getP2();
 
-        this.lineRightLower = new Line2D.Double(position.getX(), position.getY(), rightLower.getX(), rightLower.getY());
-        this.lineRightUpper = new Line2D.Double(rightLower.getX(), rightLower.getY(), rightUpper.getX(), rightUpper.getY());
-        this.lineWidth = new Line2D.Double(rightUpper.getX(), rightUpper.getY(), leftUpper.getX(), leftUpper.getY());
-        this.lineLeftLower = new Line2D.Double(position.getX(), position.getY(), leftLower.getX(), leftLower.getY());
-        this.lineLeftUpper = new Line2D.Double(leftLower.getX(), leftLower.getY(), leftUpper.getX(), leftUpper.getY());
-        this.lineHeight = new Line2D.Double(position.getX(), position.getY(), upper.getX(), upper.getY());
+        updateLines();
 
         this.path = new Path2D.Double();
         path.moveTo(position.getX(), position.getY());
@@ -110,14 +114,68 @@ public class Funnel {
         return this.area;
     }
 
-    public void draw(Graphics2D g) {
-        g.setColor(Color.cyan);
-        g.fill(area);
-        g.setColor(Color.black);
-        g.draw(area);
+    public Line2D getLineLeftLower() {
+        return lineLeftLower;
     }
 
-    public Funnel expand(double leftDegrees, double rightDegrees) {
+    public Line2D getLineLeftUpper() {
+        return lineLeftUpper;
+    }
+
+    public Line2D getLineWidth() {
+        return lineWidth;
+    }
+
+    public Line2D getLineRightLower() {
+        return lineHeight;
+    }
+
+    public Line2D getLineRightUpper() {
+        return lineRightUpper;
+    }
+
+    public Line2D getLineHeight() {
+        return lineHeight;
+    }
+
+    public Line2D getLineRightUpper2() {
+        return lineRightUpper2;
+    }
+
+    public Line2D getLineLeftUpper2() {
+        return lineLeftUpper2;
+    }
+
+    public void draw() {
+        if (g != null) {
+            g.setColor(Color.cyan);
+            g.fill(area);
+            g.setColor(Color.black);
+            g.draw(area);
+        } else {
+            System.out.println("Cant draw! initialize Graphics2D insize Funnel in order to draw");
+        }
+    }
+
+    public void updateLines() {
+        this.lineRightLower = new Line2D.Double(position.getX(), position.getY(), rightLower.getX(), rightLower.getY());
+        this.lineRightUpper = new Line2D.Double(rightLower.getX(), rightLower.getY(), rightUpper.getX(), rightUpper.getY());
+        this.lineWidth = new Line2D.Double(rightUpper.getX(), rightUpper.getY(), leftUpper.getX(), leftUpper.getY());
+        this.lineLeftLower = new Line2D.Double(position.getX(), position.getY(), leftLower.getX(), leftLower.getY());
+        this.lineLeftUpper = new Line2D.Double(leftLower.getX(), leftLower.getY(), leftUpper.getX(), leftUpper.getY());
+        this.lineHeight = new Line2D.Double(position.getX(), position.getY(), upper.getX(), upper.getY());
+        this.lineUpperRight = new Line2D.Double(rightUpper.getX(), rightUpper.getY(), upper.getX(), upper.getY());
+        this.lineUpperLeft = new Line2D.Double(leftUpper.getX(), leftUpper.getY(), upper.getX(), upper.getY());
+
+        if (isExpanded) {
+            lineUpperRight = new Line2D.Double(rightUpper.getX(), rightUpper.getY(), rightUpper2.getX(), rightUpper2.getY());
+            lineUpperLeft = new Line2D.Double(leftUpper.getX(), leftUpper.getY(), leftUpper2.getX(), leftUpper2.getY());
+            lineLeftUpper2 = new Line2D.Double(leftUpper2.getX(), leftUpper2.getY(), upper.getX(), upper.getY());
+            lineRightUpper2 = new Line2D.Double(rightUpper2.getX(), rightUpper2.getY(), upper.getX(), upper.getY());
+        }
+    }
+
+    public Funnel expand(double rightDegrees, double leftDegrees) {
         Funnel rightFunell = this.rotate(rightDegrees);
         Funnel leftFunnel = this.rotate(-leftDegrees);
 
@@ -125,12 +183,16 @@ public class Funnel {
         //leftFunnel.draw(g);
 
         Funnel expandedFunnel = new Funnel(this);
+        expandedFunnel.isExpanded = true;
+
         expandedFunnel.rightLower = rightFunell.rightLower;
         expandedFunnel.rightUpper = rightFunell.rightUpper;
         expandedFunnel.leftLower = leftFunnel.leftLower;
         expandedFunnel.leftUpper = leftFunnel.leftUpper;
         expandedFunnel.rightUpper2 = rightFunell.upper;
         expandedFunnel.leftUpper2 = leftFunnel.upper;
+
+        expandedFunnel.updateLines();
 
         expandedFunnel.path = new Path2D.Double();
         expandedFunnel.path.moveTo(position.getX(), position.getY());
@@ -165,7 +227,7 @@ public class Funnel {
         it.currentSegment(values);
         rotatedFunnel.rightUpper = new Point2D.Double(values[0], values[1]);
         System.out.println("rightUpper:[" + values[0] + ", " + values[1] + "]");
-        if(rightUpper2 != null) {
+        if (rightUpper2 != null) {
             it.next();
             it.currentSegment(values);
             rotatedFunnel.rightUpper2 = new Point2D.Double(values[0], values[1]);
@@ -177,7 +239,7 @@ public class Funnel {
         System.out.println("upper:[" + values[0] + ", " + values[1] + "]");
         it.next();
         it.currentSegment(values);
-        if(leftUpper2 != null) {
+        if (leftUpper2 != null) {
             it.next();
             it.currentSegment(values);
             rotatedFunnel.leftUpper2 = new Point2D.Double(values[0], values[1]);
@@ -195,6 +257,10 @@ public class Funnel {
         rotatedFunnel.area = new Area(rotatedFunnel.path);
 
         return rotatedFunnel;
+    }
+
+    public Boolean getIsExpanded() {
+        return isExpanded;
     }
 
     private double lineLength(Line2D line) {

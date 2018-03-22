@@ -1,11 +1,11 @@
+import models.Funnel;
+import models.Weapon;
+
 import java.awt.*;
 import java.awt.geom.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 
 public class Game extends JPanel {
 
@@ -14,12 +14,17 @@ public class Game extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.BLACK);
 
-        Funnel funnel = new Funnel(new Point2D.Double(300, 200), Weapon.supportedWeapons.get("halulan"));
-        funnel.g = g2;
-        //funnel.draw(g2);
+        //Funnel funnel = new Funnel(new Point2D.Double(300, 200), Weapon.getWeapon("halulan"). withFactor(10));
+        //funnel.g = g2;
+        //Funnel expanded = funnel.expand(40,40);
+        //expanded.draw(g2);
 
-        Funnel expanded = funnel.expand(40,40);
-        expanded.draw(g2);
+        FunnelClassifier.g = g2;
+        Boolean out = FunnelClassifier.isFunnelAllowed(new Point2D.Double(300, 400), "halulan", 80, 80);
+
+        System.out.println("out: " + out.toString());
+
+
     }
     public static void main(String[] args) {
         JFrame frame = new JFrame();
