@@ -16,7 +16,7 @@ public class FunnelClassifier {
         double angleDiff = Math.abs(rightAngle - leftAngle);
         if (angleDiff > weapon.lowerLineToHeightLineDegree * 2) {
             System.out.println("expanding degrees each side: " + angleDiff / 2);
-            funnel = funnel.expand(angleDiff / 2, angleDiff / 2);
+            funnel = funnel.expand(angleDiff / 2 - weapon.lowerLineToHeightLineDegree, angleDiff / 2 - weapon.lowerLineToHeightLineDegree);
         }
 
 
@@ -63,11 +63,19 @@ public class FunnelClassifier {
     }
 
     private static Line2D[] getOuterFirePoly(Point2D globalPos) {
-        Line2D[] lines = {
+       /* Line2D[] linesGlobalGeo = {
                 new Line2D.Double(31.261312, 34.813527, 31.264521, 34.807242),
                 new Line2D.Double(31.264521, 34.807242, 31.269422, 34.809587),
                 new Line2D.Double(31.269422, 34.809587, 31.264347, 34.816453),
-                new Line2D.Double(31.264347, 34.816453, 31.261312, 34.813527)};
+                new Line2D.Double(31.264347, 34.816453, 31.261312, 34.813527)};*/
+        Line2D[] lines = {
+                new Line2D.Double(10, 30, 230, 60),
+                new Line2D.Double(230, 60, 514, 210),
+                new Line2D.Double(514, 150, 600, 110),
+                new Line2D.Double(600, 110, 400, 370),
+                new Line2D.Double(400, 370, 120, 520),
+                new Line2D.Double(120, 520, 10, 60)};
+
         return lines;
     }
 
