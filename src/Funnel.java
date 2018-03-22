@@ -27,19 +27,17 @@ public class Funnel {
 
     public Graphics2D g;
 
-    public Funnel(Point2D position, double lowerLineLength, double upperLineLength, double wideLineLength, double heightLineLength, double line1To4Degrees) {
-        Line2D baseLine = new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + heightLineLength);
+    public Funnel(Point2D position, Weapon weapon) {
+            this.position = position;
+        this.upper = new Point2D.Double(position.getX(), position.getY() + weapon.height);
 
-        this.position = position;
-        this.upper = new Point2D.Double(position.getX(), position.getY() + heightLineLength);
-
-        Line2D line1Right = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + lowerLineLength), 90 - (line1To4Degrees));
-        Line2D line1Left = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + lowerLineLength), 90 + (line1To4Degrees));
+        Line2D line1Right = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + weapon.lowerLineLength), 90 - (weapon.lowerLineToHeightLineDegree));
+        Line2D line1Left = rotateLine(new Line2D.Double(position.getX(), position.getY(), position.getX(), position.getY() + weapon.lowerLineLength), 90 + (weapon.lowerLineToHeightLineDegree));
         this.leftLower = line1Right.getP2();
         this.rightLower = line1Left.getP2();
 
-        Line2D line2Right = getLine(leftLower, position.getX() + wideLineLength / 2, upperLineLength);
-        Line2D line2Left = getLine(rightLower, position.getX() - wideLineLength / 2, upperLineLength);
+        Line2D line2Right = getLine(leftLower, position.getX() + weapon.width / 2, weapon.upperLineLength);
+        Line2D line2Left = getLine(rightLower, position.getX() - weapon.width / 2, weapon.upperLineLength);
 
         this.leftUpper = line2Right.getP2();
         this.rightUpper = line2Left.getP2();
